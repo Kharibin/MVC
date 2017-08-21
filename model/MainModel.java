@@ -38,10 +38,14 @@ public class MainModel implements Model {
     }
 
     private List<User> getAllUsers(){
-        modelData.setUsers(userService.getUsersBetweenLevels(1,100));
-        modelData.setUsers(userService.filterOnlyActiveUsers(modelData.getUsers()));
-        return modelData.getUsers();
+        return userService.filterOnlyActiveUsers(userService.getUsersBetweenLevels(1, 100));
     }
 
+    @Override
+    public void changeUserData(String name, long id, int level) {
+        userService.createOrUpdateUser(name, id, level);
+        modelData.setDisplayDeletedUserList(false);
+        modelData.setUsers(getAllUsers());
+    }
 }
 
